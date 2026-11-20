@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": "dist",
+  "functions": {
+    "api/challenge.mjs": { "includeFiles": "dist/index.html" }
+  },
+  "routes": [
+    {
+      "src": "^/$",
+      "has": [{ "type": "query", "key": "beat", "value": "^(?:100|(?:0|[1-9][0-9]?)(?:\\.[0-9])?)$" }],
+      "dest": "/api/challenge"
+    },
+    { "handle": "filesystem" }
+  ]
+}

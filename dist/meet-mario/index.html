@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#120d1e">
+  <meta name="description" content="Mario’s got a menu for you. Find the shortest route to lights out in this ten-room Breakpoint After Hours puzzle.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meet Mario · Breakpoint After Hours">
+  <meta property="og:description" content="Follow Mario’s house order before you run out of stumbles. Presented by MoustacheDAO.">
+  <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
+  <meta property="og:url" content="https://breakpoint-after-hours.vercel.app/meet-mario/">
+  <meta property="og:image" content="https://breakpoint-after-hours.vercel.app/meet-mario/social-preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Meet Mario, with a mint and violet arcade eye.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MoustacheDAO">
+  <meta name="twitter:title" content="Meet Mario · Breakpoint After Hours">
+  <meta name="twitter:description" content="Follow Mario’s house order before you run out of stumbles. Presented by MoustacheDAO.">
+  <meta name="twitter:image" content="https://breakpoint-after-hours.vercel.app/meet-mario/social-preview.jpg">
+  <meta name="twitter:image:alt" content="Meet Mario, with a mint and violet arcade eye.">
+  <title>Meet Mario · Breakpoint After Hours</title>
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="game.css">
+  <script src="game.js" type="module"></script>
+</head>
+<body>
+  <main class="game">
+    <header class="masthead">
+      <a class="back" href="../">← Breakpoint After Hours</a>
+      <div class="venue-mark" aria-hidden="true">
+        <svg class="venue-signal" viewBox="0 0 56 50" focusable="false">
+          <defs>
+            <linearGradient id="signal-ink" x2="1" y2="1">
+              <stop stop-color="#b18bff"/>
+              <stop offset="1" stop-color="#72ffd1"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#signal-ink)" stroke-width="3.75" stroke-linecap="round">
+            <path d="M 10 14 Q 17 8 25 12 T 44 11"/>
+            <path d="M 15 25 Q 23 20 33 25 T 47 24"/>
+            <path d="M 8 36 Q 15 30 22 35 T 40 35"/>
+          </g>
+        </svg>
+      </div>
+      <h1>Meet Mario<span>.</span></h1>
+      <p id="objective">Pick up everything on Mario’s menu before you run out of stumbles.</p>
+    </header>
+
+    <div class="game-grid">
+      <section class="floor" aria-label="Pub floor" tabindex="-1">
+        <div class="floor-heading">
+          <p><span class="level-count"></span><strong class="room-name">The Front Room</strong></p>
+          <p class="move-count"><span id="moves">0</span>/<span id="limit">—</span> stumbles <span class="divider" aria-hidden="true">·</span> par <span id="par">—</span></p>
+        </div>
+        <div class="house-order" id="house-order" hidden>
+          <strong>House order</strong>
+          <span id="relay-next" hidden></span>
+          <ul id="order-lines"></ul>
+        </div>
+
+        <div class="board-wrap">
+          <canvas id="board" width="312" height="264" role="img" aria-label="Top-down pub puzzle." aria-describedby="objective house-order movement-help"></canvas>
+          <div class="finish" id="finish" hidden>
+            <div class="finish-paper">
+              <p class="finish-kicker">Blackout receipt</p>
+              <h2 id="finish-title" tabindex="-1">Goodnight.</h2>
+              <p id="finish-note"></p>
+              <p id="finish-score"></p>
+              <div class="finish-actions">
+                <button class="next-level" type="button" id="next">Next room <span aria-hidden="true">→</span></button>
+                <button class="play-again" type="button" id="again">Replay room</button>
+                <button class="play-again" type="button" id="finish-share" data-open-scorecard aria-haspopup="dialog" hidden>Scorecard</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-controls">
+          <div class="control-copy">
+            <p class="scene-label"><span id="scene-speaker">Mario</span><span id="pickup-count"></span></p>
+            <p id="message"></p>
+            <p id="movement-help">Arrow keys, WASD, or the pad.</p>
+          </div>
+          <div class="dpad" role="group" aria-label="Movement controls">
+            <button type="button" data-move="up" aria-label="Move up">↑</button>
+            <button type="button" data-move="left" aria-label="Move left">←</button>
+            <button type="button" data-move="down" aria-label="Move down">↓</button>
+            <button type="button" data-move="right" aria-label="Move right">→</button>
+          </div>
+        </div>
+        <p class="visually-hidden" id="narration" aria-live="polite" aria-atomic="true"></p>
+      </section>
+
+      <section class="menu" aria-labelledby="menu-title">
+        <header class="menu-heading">
+          <h2 id="menu-title">Mario’s menu</h2>
+          <p id="menu-count">0 / 3</p>
+        </header>
+        <ul class="items"></ul>
+        <ul class="menu-notes" id="menu-notes" aria-label="Mario’s notes" hidden></ul>
+        <footer class="menu-footer">
+          <span id="tab-state">On the house</span>
+          <button type="button" id="reset">Restart <span aria-hidden="true">↻</span></button>
+        </footer>
+      </section>
+      <nav class="levels" aria-label="Rooms">
+        <h2>Rooms</h2>
+        <div class="level-buttons"></div>
+        <button class="scorecard-launch" id="rooms-share" type="button" data-open-scorecard aria-haspopup="dialog" hidden>Scorecard &amp; stickers</button>
+      </nav>
+    </div>
+    <footer class="attribution">
+      <p class="game-presenter">presented by <a href="https://x.com/MoustacheDAO" target="_blank" rel="noopener" aria-label="MoustacheDAO on X (opens in a new tab)">MoustacheDAO</a></p>
+      <p>Unofficial Breakpoint parody.</p>
+    </footer>
+    <noscript>Enable JavaScript to play.</noscript>
+  </main>
+  <dialog id="scorecard-dialog" class="scorecard-dialog" aria-labelledby="scorecard-title">
+    <header class="scorecard-head">
+      <h2 id="scorecard-title">Share your scorecard</h2>
+      <form method="dialog"><button class="scorecard-close" type="submit" aria-label="Close scorecard" autofocus>×</button></form>
+    </header>
+    <fieldset class="scorecard-kinds">
+      <legend class="visually-hidden">Image to share</legend>
+      <label><input type="radio" name="scorecard-kind" value="scorecard" checked><span>Scorecard</span></label>
+      <label><input type="radio" name="scorecard-kind" value="sticker"><span>Menu sticker</span></label>
+    </fieldset>
+    <label id="sticker-field" class="sticker-field" hidden>Menu item <select id="sticker-item"></select></label>
+    <div class="scorecard-proof"><img id="scorecard-image" alt="" hidden></div>
+    <div class="scorecard-actions">
+      <button type="button" id="share-game-image" hidden>Share image</button>
+      <button type="button" id="copy-game-image" hidden>Copy image</button>
+      <a id="download-game-image" download hidden>Download PNG</a>
+    </div>
+    <button type="button" id="copy-game-link" class="scorecard-link">Copy game link</button>
+    <input id="game-link-fallback" type="url" aria-label="Game link" readonly hidden>
+    <p id="scorecard-status" role="status"></p>
+  </dialog>
+</body>
+</html>

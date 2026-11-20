@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#100a19">
+  <meta name="description" content="One pint. One packed pub. A 3D Breakpoint After Hours arcade game.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Break Pint · Breakpoint After Hours">
+  <meta property="og:description" content="One pint. One packed pub. Get it to the other end in one piece.">
+  <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
+  <meta property="og:url" content="https://breakpoint-after-hours.vercel.app/break-pint/">
+  <meta property="og:image" content="https://breakpoint-after-hours.vercel.app/break-pint/social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="A pint on a tray weaving through a neon pub.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MoustacheDAO">
+  <meta name="twitter:title" content="Break Pint · Breakpoint After Hours">
+  <meta name="twitter:description" content="One pint. One packed pub. Get it to the other end in one piece.">
+  <meta name="twitter:image" content="https://breakpoint-after-hours.vercel.app/break-pint/social-preview.png">
+  <meta name="twitter:image:alt" content="A pint on a tray weaving through a neon pub.">
+  <title>Break Pint · Breakpoint After Hours</title>
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="./game.css">
+</head>
+<body>
+  <main id="cabinet" data-view="title">
+    <canvas id="world" tabindex="-1" aria-label="3D pub. Drag left or right, or use the arrow keys to steer." aria-describedby="play-help"></canvas>
+    <div class="shade" aria-hidden="true"></div>
+    <header class="masthead">
+      <a class="back" href="../"><span aria-hidden="true">←</span> Breakpoint After Hours</a>
+      <div class="settings">
+        <button class="subtle" id="sound" type="button" aria-pressed="false">Sound off</button>
+        <button class="subtle" id="pause" type="button" hidden>Pause</button>
+      </div>
+    </header>
+
+    <section id="title-screen" class="screen title-screen" aria-labelledby="game-name">
+      <div class="title-copy">
+        <h1 id="game-name">Break<br><em>Pint.</em></h1>
+        <p>One pint. One packed pub.<br>Get it to the other end in one piece.</p>
+        <p class="presented-by">presented by <a href="https://x.com/MoustacheDAO" target="_blank" rel="noopener" aria-label="MoustacheDAO on X (opens in a new tab)">MoustacheDAO</a></p>
+      </div>
+      <div class="actions">
+        <button id="start" class="primary" type="button" disabled>Pint? <span aria-hidden="true">→</span></button>
+        <p class="input-hint"><span class="drag-hint">Drag gently to steer</span><span class="key-hint"><kbd>←</kbd> <kbd>→</kbd> or drag gently</span></p>
+      </div>
+      <p id="load-error" class="message" role="status" hidden></p>
+    </section>
+
+    <section id="hud" class="hud" aria-label="Run status" hidden>
+      <div class="meter pint-meter">
+        <span>Pint left</span>
+        <strong id="fill-text">100%</strong>
+        <div class="rail" aria-hidden="true"><i id="fill-bar"></i></div>
+        <div id="fill-tick" class="fill-tick" aria-hidden="true"></div>
+      </div>
+      <div class="meter route-meter">
+        <span>To coaster</span>
+        <strong id="distance-text">53 m</strong>
+        <div class="rail" aria-hidden="true"><i id="progress-bar"></i></div>
+      </div>
+    </section>
+    <div id="play-help" class="play-help" hidden>
+      <span class="drag-hint">← Drag to steer →</span>
+      <span class="key-hint">← Arrow keys or drag to steer →</span>
+    </div>
+    <div id="incident" class="incident" aria-live="polite"></div>
+
+    <section id="result" class="screen result-screen" aria-labelledby="result-title" hidden>
+      <div class="result-copy">
+        <p id="result-title" class="result-label" tabindex="-1"></p>
+        <div class="result-number"><span id="result-score"></span><small>%</small></div>
+        <p class="result-caption" id="result-caption">of a pint delivered</p>
+        <p id="result-gag" class="result-gag"></p>
+        <p id="result-best" class="result-best"></p>
+      </div>
+      <div class="actions">
+        <button id="again" class="primary" type="button" aria-label="Pint? Play again">Pint? <span aria-hidden="true">↻</span></button>
+        <button id="share" class="secondary" type="button">Share score</button>
+        <p id="share-status" class="message" role="status"></p>
+      </div>
+    </section>
+
+    <dialog id="break" aria-labelledby="break-title">
+      <h2 id="break-title">Hold that pint.</h2>
+      <div class="pause-actions">
+        <button id="resume" class="primary" type="button" autofocus>Keep going <span aria-hidden="true">→</span></button>
+        <button id="restart" class="secondary" type="button">Start over</button>
+      </div>
+    </dialog>
+    <noscript><p class="message">Enable JavaScript to play Break Pint.</p></noscript>
+  </main>
+  <script type="module" src="./game.mjs"></script>
+</body>
+</html>

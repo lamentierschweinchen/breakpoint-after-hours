@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-visual">
+  <meta name="theme-color" content="#100d18">
+  <meta name="description" content="An audit of everything that wasn’t livestreamed. Get your Breakpoint After Hours efficiency score.">
+  <meta property="og:title" content="Breakpoint After Hours">
+  <meta property="og:description" content="An audit of everything that wasn’t livestreamed. Get your Breakpoint After Hours efficiency score. Presented by MoustacheDAO.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
+  <meta property="og:url" content="https://breakpoint-after-hours.vercel.app/">
+  <meta property="og:image" content="https://breakpoint-after-hours.vercel.app/assets/social-preview-stamped.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Breakpoint After Hours. Efficiency audit · London 2026.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MoustacheDAO">
+  <meta name="twitter:title" content="Breakpoint After Hours">
+  <meta name="twitter:description" content="An audit of everything that wasn’t livestreamed. Get your Breakpoint After Hours efficiency score. Presented by MoustacheDAO.">
+  <meta name="twitter:image" content="https://breakpoint-after-hours.vercel.app/assets/social-preview-stamped.jpg">
+  <meta name="twitter:image:alt" content="Breakpoint After Hours. Efficiency audit · London 2026.">
+  <link rel="icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.mjs" type="module"></script>
+  <title>Breakpoint After Hours — Efficiency Score</title>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="./" class="wordmark">
+        <span class="brand-icon" aria-hidden="true"></span>
+        <span>BP <b>AFTER HOURS</b></span>
+      </a>
+      <a class="method-link" href="#method">How it’s scored</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div class="hero-art" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <p class="eyebrow hero-kicker">London 2026</p>
+        <h1 id="title">BREAKPOINT<br><span>AFTER HOURS.</span></h1>
+        <p class="hero-copy">An audit of everything that wasn’t livestreamed.</p>
+        <p class="hero-presenter">presented by <a href="https://x.com/MoustacheDAO" target="_blank" rel="noopener" aria-label="MoustacheDAO on X (opens in a new tab)">MoustacheDAO</a></p>
+        <p id="challenge" class="challenge" hidden>Benchmark to beat: <strong id="challenge-score"></strong> <span>/ 100</span></p>
+        <a class="hero-action" href="#audit-form">Start your audit</a>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="audit">
+        <form id="audit-form" class="audit-form" aria-labelledby="form-title" autocomplete="off">
+          <div class="form-head">
+            <h2 id="form-title">Your Breakpoint stats</h2>
+            <div class="form-controls">
+              <button id="example" class="text-button" type="button">Try an example</button>
+              <button id="clear" class="text-button text-button-muted" type="button">Clear</button>
+            </div>
+          </div>
+          <div class="input-groups">
+            <fieldset class="serious-business" data-reveal>
+              <legend><span class="group-mark serious-mark" aria-hidden="true">+</span>Serious Business</legend>
+              <div class="fields">
+                <div class="field">
+                  <label for="pints">Pints</label>
+                  <div class="input-frame tally-input">
+                    <button type="button" data-tally="pints" data-step="-1" aria-label="Remove a pint" disabled>−</button>
+                    <input id="pints" name="pints" type="number" min="0" step="any" placeholder="0" inputmode="decimal">
+                    <button type="button" data-tally="pints" data-step="1" aria-label="Add a pint">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="cigs">Cigs</label>
+                  <div class="input-frame tally-input">
+                    <button type="button" data-tally="cigs" data-step="-1" aria-label="Remove a cig" disabled>−</button>
+                    <input id="cigs" name="cigs" type="number" min="0" placeholder="0" inputmode="numeric">
+                    <button type="button" data-tally="cigs" data-step="1" aria-label="Add a cig">+</button>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="favors">Party favors</label>
+                  <div class="input-frame">
+                    <input id="favors" name="favors" type="number" min="0" step="any" placeholder="0" inputmode="decimal" aria-describedby="favors-unit">
+                    <span id="favors-unit" class="sr-only">Grams</span>
+                    <div class="unit-control" role="group" aria-label="Party favors unit">
+                      <button type="button" class="unit-button" data-unit="g" aria-label="Grams" aria-pressed="true">g</button>
+                      <button type="button" class="unit-button" data-unit="oz" aria-label="Ounces" aria-pressed="false">oz</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="blackouts">Blackouts</label>
+                  <div class="input-frame tally-input">
+                    <button type="button" data-tally="blackouts" data-step="-1" aria-label="Remove a blackout" disabled>−</button>
+                    <input id="blackouts" name="blackouts" type="number" min="0" placeholder="0" inputmode="numeric">
+                    <button type="button" data-tally="blackouts" data-step="1" aria-label="Add a blackout">+</button>
+                  </div>
+                </div>
+                <div class="field sleep-field">
+                  <label for="sleep">Hours slept</label>
+                  <div class="sleep-controls">
+                    <div class="sleep-track">
+                      <input id="sleep-range" type="range" min="0" max="24" step="0.5" value="8" aria-label="Adjust hours slept per night" aria-describedby="sleep-unit">
+                      <div class="sleep-ticks" aria-hidden="true"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>
+                    </div>
+                    <div class="input-frame">
+                      <input id="sleep" name="sleep" type="number" min="0" max="24" step="any" placeholder="—" inputmode="decimal" aria-describedby="sleep-unit">
+                      <span id="sleep-unit" class="input-affix">per night</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+            <fieldset data-reveal>
+              <legend><span class="group-mark positive-mark" aria-hidden="true">+</span>Conference stats</legend>
+              <div class="fields">
+                <div class="field">
+                  <label for="leads">Real leads</label>
+                  <input id="leads" name="leads" type="number" min="0" placeholder="0" inputmode="numeric">
+                </div>
+                <div class="field">
+                  <label for="deals">Deals closed</label>
+                  <input id="deals" name="deals" type="number" min="0" placeholder="0" inputmode="numeric">
+                </div>
+                <div class="field">
+                  <label for="value">Closed deal value</label>
+                  <span class="input-frame">
+                    <span class="input-affix" aria-hidden="true">$</span>
+                    <input id="value" name="value" type="number" min="0" step="any" placeholder="0" inputmode="decimal" aria-describedby="value-unit">
+                    <span id="value-unit" class="input-affix">USD</span>
+                  </span>
+                </div>
+                <div class="field">
+                  <label for="side-events">Side events attended</label>
+                  <input id="side-events" name="sideEvents" type="number" min="0" placeholder="0" inputmode="numeric">
+                </div>
+                <div class="field">
+                  <label for="talks">Talks attended</label>
+                  <input id="talks" name="talks" type="number" min="0" placeholder="0" inputmode="numeric">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <noscript><p class="error">Enable JavaScript to calculate your score.</p></noscript>
+          <button id="get-receipt" class="action-button get-receipt" type="button">Get receipt</button>
+        </form>
+
+        <div class="receipt-area">
+          <section id="score-receipt" class="receipt" aria-labelledby="receipt-title" tabindex="-1">
+            <header class="receipt-header">
+              <h2 id="receipt-title">Breakpoint After Hours</h2>
+              <p class="receipt-subtitle">Efficiency audit · London 2026</p>
+              <p id="receipt-printed" hidden></p>
+            </header>
+            <div id="receipt-empty" class="receipt-empty">
+              <p>No transactions on file.</p>
+              <p>Add your first stat to begin the audit.</p>
+            </div>
+            <div id="receipt-details" hidden>
+              <div id="receipt-lines"></div>
+              <div class="receipt-total">
+                <h3>Efficiency score</h3>
+                <p id="score-value"></p>
+              </div>
+              <div id="benchmark" class="receipt-benchmark" hidden>
+                <p id="benchmark-outcome"></p>
+                <button id="send-score" type="button" class="text-button" aria-haspopup="dialog">Send your score back</button>
+              </div>
+              <div class="receipt-block receipt-opinion">
+                <h3>Opinion</h3>
+                <p id="opinion-stamp" class="opinion-stamp"></p>
+                <p id="opinion-finding"></p>
+              </div>
+              <div id="receipt-economics" class="receipt-block" hidden>
+                <h3>Unit economics</h3>
+                <dl id="economics-list"></dl>
+              </div>
+              <div id="receipt-notes" class="receipt-block" hidden>
+                <h3>Auditor’s notes</h3>
+                <div id="receipt-notes-list"></div>
+              </div>
+            </div>
+            <footer class="receipt-footer">
+              <p>Customer copy.</p>
+              <p>This audit has not been audited.</p>
+              <p>breakpoint-after-hours.vercel.app</p>
+            </footer>
+            <p class="sr-only" id="spoken-score" role="status" aria-atomic="true"></p>
+          </section>
+          <button type="button" id="share-score" class="action-button receipt-share" aria-haspopup="dialog" disabled>Share receipt</button>
+          <nav class="game-links" aria-label="After Hours games">
+            <a class="text-button game-link" href="./meet-mario/" target="_blank" rel="noopener">Meet Mario<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="text-button game-link" href="./break-pint/" target="_blank" rel="noopener">Break Pint<span class="sr-only"> (opens in a new tab)</span></a>
+          </nav>
+        </div>
+      </div>
+
+      <details id="method" class="method" data-reveal>
+        <summary>How it’s scored</summary>
+        <div class="method-body">
+          <p>Add conference and Serious Business points for one total out of 100.</p>
+          <div class="method-columns">
+            <div>
+              <h3>Conference stats · 35 points</h3>
+              <ul>
+                <li>Real leads · first 8 worth up to 6 points, next 16 worth up to 2 more</li>
+                <li>4 per deal closed, up to 12</li>
+                <li>1 per $5,000 in closed deal value, up to 10</li>
+                <li>Side events · first 5 worth up to 3 points, next 10 worth up to 2 more</li>
+                <li>Talks attended · 0 points</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Serious Business · 65 points</h3>
+              <p>Each amount adds points independently. Extra pints, cigs, and party favors earn less as the tally grows. Fewer hours slept add more points. A blank field adds zero.</p>
+              <ul>
+                <li>Pints · up to 20</li>
+                <li>Cigs · up to 14</li>
+                <li>Party favors · up to 15</li>
+                <li>Blackouts · up to 6, within the 65-point limit</li>
+                <li>Hours slept · up to 16</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <footer class="wrap site-footer">
+    <span>Unofficial Breakpoint parody.</span>
+    <span>Your stats stay in this browser tab.</span>
+  </footer>
+
+  <div id="score-dock" class="score-dock" data-visible="false" inert>
+    <p id="live-note" class="dock-note" role="status" aria-live="polite" aria-atomic="true"></p>
+    <div class="dock-main">
+      <a id="dock-jump" class="dock-readout" href="#score-receipt">
+        <span class="dock-label">Running total</span>
+        <span class="dock-total"><span id="dock-score">—</span><span class="dock-scale"> / 100</span></span>
+      </a>
+      <button id="dock-share" type="button">Get receipt</button>
+    </div>
+  </div>
+
+  <dialog id="share-dialog" class="share-dialog" aria-labelledby="share-title" data-format="landscape" data-copy="public">
+    <div class="share-head">
+      <h2 id="share-title">Share your receipt</h2>
+      <form method="dialog"><button class="close-button" type="submit" aria-label="Close" autofocus>×</button></form>
+    </div>
+    <fieldset class="share-picker share-copies">
+      <legend class="sr-only">Share your receipt</legend>
+      <label>
+        <input type="radio" name="share-copy" value="public" checked>
+        <span>Share receipt</span>
+      </label>
+      <label>
+        <input type="radio" name="share-copy" value="customer">
+        <span>Customer copy.</span>
+      </label>
+    </fieldset>
+    <fieldset class="share-picker share-formats">
+      <legend class="sr-only">Image size</legend>
+      <label>
+        <input type="radio" name="share-format" value="landscape" checked>
+        <span>Post</span>
+      </label>
+      <label>
+        <input type="radio" name="share-format" value="story">
+        <span>Story</span>
+      </label>
+    </fieldset>
+    <div class="share-proof">
+      <img id="share-preview" class="share-preview" width="1200" height="630" alt="" hidden>
+      <p id="share-status" class="share-status" role="status"></p>
+    </div>
+    <div class="share-actions">
+      <button id="native-share" class="action-button" type="button" hidden>Share image</button>
+      <button id="copy-image" class="action-button" type="button" hidden>Copy image</button>
+      <a id="download-image" class="action-button download-button" download hidden>Download PNG</a>
+    </div>
+    <button id="copy-challenge" type="button" class="text-button challenge-link">Copy challenge link</button>
+    <input id="challenge-url" class="challenge-url" type="text" readonly aria-label="Challenge link" hidden>
+  </dialog>
+</body>
+</html>
