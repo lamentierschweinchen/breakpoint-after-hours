@@ -9,8 +9,8 @@
   <meta property="og:description" content="An audit of everything that wasn’t livestreamed. Get your Breakpoint After Hours efficiency score. Presented by MoustacheDAO.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
-  <meta property="og:url" content="https://breakpoint-after-hours.vercel.app/">
-  <meta property="og:image" content="https://breakpoint-after-hours.vercel.app/assets/social-preview-stamped.jpg">
+  <meta property="og:url" content="https://breakpoint.beer/">
+  <meta property="og:image" content="https://breakpoint.beer/assets/social-preview-stamped.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -19,8 +19,9 @@
   <meta name="twitter:site" content="@MoustacheDAO">
   <meta name="twitter:title" content="Breakpoint After Hours">
   <meta name="twitter:description" content="An audit of everything that wasn’t livestreamed. Get your Breakpoint After Hours efficiency score. Presented by MoustacheDAO.">
-  <meta name="twitter:image" content="https://breakpoint-after-hours.vercel.app/assets/social-preview-stamped.jpg">
+  <meta name="twitter:image" content="https://breakpoint.beer/assets/social-preview-stamped.jpg">
   <meta name="twitter:image:alt" content="Breakpoint After Hours. Efficiency audit · London 2026.">
+  <link rel="canonical" href="https://breakpoint.beer/">
   <link rel="icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
@@ -34,7 +35,10 @@
         <span class="brand-icon" aria-hidden="true"></span>
         <span>BP <b>AFTER HOURS</b></span>
       </a>
-      <a class="method-link" href="#method">How it’s scored</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="./" aria-current="page">Receipt</a>
+        <a href="./arcade/">Arcade</a>
+      </nav>
     </div>
   </header>
 
@@ -47,7 +51,10 @@
         <p class="hero-copy">An audit of everything that wasn’t livestreamed.</p>
         <p class="hero-presenter">presented by <a href="https://x.com/MoustacheDAO" target="_blank" rel="noopener" aria-label="MoustacheDAO on X (opens in a new tab)">MoustacheDAO</a></p>
         <p id="challenge" class="challenge" hidden>Benchmark to beat: <strong id="challenge-score"></strong> <span>/ 100</span></p>
-        <a class="hero-action" href="#audit-form">Start your audit</a>
+        <div class="hero-actions">
+          <a class="hero-action" href="#audit-form">Start your audit</a>
+          <a class="method-link" href="#method">How it’s scored</a>
+        </div>
       </div>
     </section>
 
@@ -187,15 +194,11 @@
             <footer class="receipt-footer">
               <p>Customer copy.</p>
               <p>This audit has not been audited.</p>
-              <p>breakpoint-after-hours.vercel.app</p>
+              <p>breakpoint.beer</p>
             </footer>
             <p class="sr-only" id="spoken-score" role="status" aria-atomic="true"></p>
           </section>
           <button type="button" id="share-score" class="action-button receipt-share" aria-haspopup="dialog" disabled>Share receipt</button>
-          <nav class="game-links" aria-label="After Hours games">
-            <a class="text-button game-link" href="./meet-mario/" target="_blank" rel="noopener">Meet Mario<span class="sr-only"> (opens in a new tab)</span></a>
-            <a class="text-button game-link" href="./break-pint/" target="_blank" rel="noopener">Break Pint<span class="sr-only"> (opens in a new tab)</span></a>
-          </nav>
         </div>
       </div>
 
@@ -279,6 +282,7 @@
       <p id="share-status" class="share-status" role="status"></p>
     </div>
     <div class="share-actions">
+      <a id="share-on-x" class="action-button" target="_blank" rel="noopener noreferrer" hidden>Share on X</a>
       <button id="native-share" class="action-button" type="button" hidden>Share image</button>
       <button id="copy-image" class="action-button" type="button" hidden>Copy image</button>
       <a id="download-image" class="action-button download-button" download hidden>Download PNG</a>

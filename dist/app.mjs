@@ -2,6 +2,7 @@ import { gramsPerOunce } from './score.mjs';
 import { buildReceipt, buildShareScore, fieldError, liveNotes } from './audit.mjs';
 import { renderReceipt } from './receipt.mjs';
 import { createScoreImage } from './share-image.mjs';
+import { createSocialShare } from './social.mjs';
 
 const root = document.documentElement;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -47,12 +48,15 @@ const shareCopies = [...shareDialog.querySelectorAll('input[name="share-copy"]')
 const preview = document.querySelector('#share-preview');
 const shareStatus = document.querySelector('#share-status');
 const downloadImage = document.querySelector('#download-image');
+const shareOnX = document.querySelector('#share-on-x');
 const nativeShare = document.querySelector('#native-share');
 const copyImage = document.querySelector('#copy-image');
 const copyChallenge = document.querySelector('#copy-challenge');
 const challengeInput = document.querySelector('#challenge-url');
+const arcadeLink = document.querySelector('.site-nav a[href="./arcade/"]');
 
 const example = { leads: 10, deals: 3, value: 24000, sideEvents: 3, pints: 5, cigs: 6, favors: 1, sleep: 4 };
+const arcadeDraftKey = 'breakpoint:arcade-receipt';
 const pulseTimers = new WeakMap();
 let activeUnit = 'g';
 let enteredFavors = { amount: 0, unit: 'g' };
@@ -87,6 +91,31 @@ if (target !== null) {
 function recordFavors() {
   enteredFavors = { amount: favorsInput.valueAsNumber || 0, unit: activeUnit };
 }
+
+arcadeLink.addEventListener('click', event => {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const values = Object.fromEntries(inputs.filter(input => input.value !== '').map(input => [input.name, input.value]));
+  if (!Object.keys(values).length) return;
+  try {
+    sessionStorage.setItem(arcadeDraftKey, JSON.stringify({ values, unit: activeUnit, enteredFavors }));
+  } catch {
+    // The arcade is still available when browser storage is disabled.
+  }
+});
+
+function takeArcadeDraft() {
+  try {
+    const saved = sessionStorage.getItem(arcadeDraftKey);
+    sessionStorage.removeItem(arcadeDraftKey);
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+}
+
+window.addEventListener('pageshow', event => {
+  if (event.persisted) takeArcadeDraft();
+});
 
 function setUnit(unit) {
   if (unit === activeUnit) return;
@@ -123,8 +152,10 @@ function pulse(element, className) {
 }
 
 function updateDock() {
+  const active = document.activeElement;
+  const editingInput = form.contains(active) && active.matches('input');
   const visible = !shareDialog.open && !receiptRequested &&
-    (form.contains(document.activeElement) || (formEngaged && formInView));
+    (editingInput || (formEngaged && formInView));
   if (scoreDock.dataset.visible === String(visible)) return;
   scoreDock.dataset.visible = String(visible);
   scoreDock.inert = !visible;
@@ -254,7 +285,8 @@ window.addEventListener('resize', () => {
 visualViewport?.addEventListener('resize', scheduleFocusFit);
 visualViewport?.addEventListener('scroll', syncDockPosition, { passive: true });
 reducedMotion.addEventListener('change', syncScrollProgress);
-form.addEventListener('focusin', () => {
+form.addEventListener('focusin', event => {
+  if (!event.target.matches('input')) return;
   formEngaged = true;
   receiptRequested = false;
   updateDock();
@@ -366,6 +398,8 @@ function clearShareImage() {
   preview.removeAttribute('src');
   downloadImage.hidden = true;
   downloadImage.removeAttribute('href');
+  shareOnX.hidden = true;
+  shareOnX.removeAttribute('href');
   nativeShare.hidden = true;
   copyImage.hidden = true;
 }
@@ -381,6 +415,10 @@ async function renderShareImage() {
   shareDialog.dataset.format = format;
   shareDialog.dataset.copy = copy;
   copyChallenge.hidden = isCustomer;
+  if (!isCustomer) {
+    shareOnX.href = receiptShare(snapshot).xUrl;
+    shareOnX.hidden = false;
+  }
   challengeInput.hidden = true;
   shareStatus.textContent = 'Printing…';
 
@@ -429,19 +467,18 @@ sendScore.addEventListener('click', openShare);
 for (const option of [...shareFormats, ...shareCopies]) option.addEventListener('change', renderShareImage);
 
 function challengeLink(score) {
-  const origin = location.hostname.endsWith('.chatgpt.site')
-    ? 'https://breakpoint-after-hours.vercel.app'
-    : location.origin;
-  const link = new URL(location.pathname, origin);
+  const link = new URL('/', 'https://breakpoint.beer');
   link.searchParams.set('beat', String(score));
   return link.href;
 }
 
-function systemShare({ score, opinion }) {
-  return {
-    files: [shareFile],
-    text: `Breakpoint After Hours audit: ${score} / 100. ${opinion.stamp}. Your turn: ${challengeLink(score)}`
-  };
+function receiptShare({ score, opinion }) {
+  return createSocialShare(`Breakpoint After Hours audit: ${score} / 100. ${opinion.stamp}. Your turn.`, challengeLink(score));
+}
+
+function systemShare(snapshot) {
+  const { text, url } = receiptShare(snapshot);
+  return { files: [shareFile], text, url };
 }
 
 nativeShare.addEventListener('click', async () => {
@@ -493,7 +530,14 @@ shareDialog.addEventListener('close', () => {
   shareOpener?.focus({ preventScroll: true });
 });
 
-recordFavors();
+const arcadeDraft = takeArcadeDraft();
+if (arcadeDraft) {
+  setUnit(arcadeDraft.unit);
+  for (const input of inputs) input.value = arcadeDraft.values[input.name] ?? '';
+  enteredFavors = arcadeDraft.enteredFavors;
+} else {
+  recordFavors();
+}
 renderAudit({ initial: true });
 syncDockPosition();
 syncScrollProgress();

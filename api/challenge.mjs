@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 
-const origin = 'https://breakpoint-after-hours.vercel.app';
+const origin = 'https://breakpoint.beer';
 const homepage = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
 const scorePattern = /^(?:100|(?:0|[1-9][0-9]?)(?:\.[0-9])?)$/;
 

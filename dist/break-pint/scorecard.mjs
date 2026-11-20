@@ -48,6 +48,6 @@ export function renderScorecard(world, { percent, seconds, gag, delivered }) {
   pen.lineTo(1152, 745);
   pen.stroke();
   pen.fillStyle = "#fff1db";
-  pen.fillText("breakpoint-after-hours.vercel.app/break-pint", 48, 796);
+  pen.fillText("breakpoint.beer/break-pint", 48, 796);
   return new Promise((resolve) => image.toBlob(resolve, "image/png"));
 }

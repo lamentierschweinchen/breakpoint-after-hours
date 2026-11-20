@@ -849,7 +849,7 @@ h1 span {
 
 .scorecard-actions > *:hover { border-color: var(--mint); }
 
-#download-game-image {
+#share-on-x {
   background: var(--mint);
   border-color: var(--mint);
   color: var(--ink);

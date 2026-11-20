@@ -1,4 +1,6 @@
-const gameUrl = "https://breakpoint-after-hours.vercel.app/meet-mario/";
+import { createSocialShare } from "../social.mjs";
+
+const gameUrl = "https://breakpoint.beer/meet-mario/";
 const cream = "#fff0d4";
 const mint = "#abffd2";
 const violet = "#d9bbff";
@@ -95,7 +97,7 @@ function drawProgress(pen, { rooms, items }, drawIcon) {
     else print(pen, "·", x + (step - 10) / 2, 841, { size: 35, color: "#ab91c7", align: "center" });
   });
 
-  print(pen, "breakpoint-after-hours.vercel.app/meet-mario", 72, 1015, { size: 23, color: violet });
+  print(pen, "breakpoint.beer/meet-mario", 72, 1015, { size: 23, color: violet });
 }
 
 function drawSticker(pen, item, drawIcon) {
@@ -164,6 +166,7 @@ export function bindScorecard(dialog, getSnapshot, drawIcon) {
   const status = find("#scorecard-status");
   const download = find("#download-game-image");
   const share = find("#share-game-image");
+  const shareOnX = find("#share-on-x");
   const copy = find("#copy-game-image");
   const linkFallback = find("#game-link-fallback");
   const scorecardMode = find('[value="scorecard"]');
@@ -172,7 +175,7 @@ export function bindScorecard(dialog, getSnapshot, drawIcon) {
   let opener;
   let file;
   let imageUrl;
-  let shareText;
+  let social;
   let generation = 0;
 
   function clearImage() {
@@ -183,6 +186,8 @@ export function bindScorecard(dialog, getSnapshot, drawIcon) {
     proof.removeAttribute("src");
     download.hidden = true;
     download.removeAttribute("href");
+    shareOnX.hidden = true;
+    shareOnX.removeAttribute("href");
     share.hidden = true;
     copy.hidden = true;
   }
@@ -194,14 +199,16 @@ export function bindScorecard(dialog, getSnapshot, drawIcon) {
     dialog.dataset.kind = item ? "sticker" : "scorecard";
     status.textContent = "Printing…";
     clearImage();
+    const { count, moves, overPar } = summarize(snapshot);
+    const report = `${count}/${snapshot.rooms.length} rooms cleared in ${moves} stumbles${overPar ? `, ${overPar} over par` : ", on par"}.`;
+    social = createSocialShare(item ? `${item.name} from Mario’s menu.` : `Meet Mario. ${report}`, gameUrl);
+    shareOnX.href = social.xUrl;
+    shareOnX.hidden = false;
 
     try {
       const blob = await renderImage(snapshot, item, drawIcon);
       if (!dialog.open || generation !== generationAtStart) return;
       const name = item ? `meet-mario-${item.id}.png` : "meet-mario-scorecard.png";
-      const { count, moves, overPar } = summarize(snapshot);
-      const report = `${count}/${snapshot.rooms.length} rooms cleared in ${moves} stumbles${overPar ? `, ${overPar} over par` : ", on par"}.`;
-      shareText = item ? `${item.name} from Mario’s menu.` : `Meet Mario. ${report}`;
       file = new File([blob], name, { type: "image/png" });
       imageUrl = URL.createObjectURL(blob);
       proof.src = imageUrl;
@@ -237,7 +244,7 @@ export function bindScorecard(dialog, getSnapshot, drawIcon) {
     if (!file) return;
     const current = generation;
     try {
-      await navigator.share({ files: [file], text: shareText, url: gameUrl });
+      await navigator.share({ files: [file], text: social.text, url: social.url });
     } catch (error) {
       if (dialog.open && current === generation && error.name !== "AbortError") status.textContent = "Download the PNG to post it.";
     }

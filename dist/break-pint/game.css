@@ -140,6 +140,7 @@ h1 em { color: var(--mint); font-style: normal; }
   font-weight: 850;
 }
 .primary { color: var(--ink); background: var(--mint); }
+.actions a { text-decoration: none; }
 .primary:disabled { opacity: .6; }
 .secondary { color: var(--paper); background: #100a198c; border-color: var(--line); }
 .primary span { font-size: 22px; line-height: 1; }
@@ -283,7 +284,7 @@ dialog h2 { font: 400 clamp(23px, 6vw, 37px)/1.06 var(--display); margin: 0 0 22
   .result-number { font-size: clamp(88px, 27vw, 140px); }
   .result-caption, .result-gag { margin-top: 7px; }
   .result-best { margin-top: 9px; }
-  .result-screen .actions button { flex: 1 1 130px; min-width: 0; }
+  .result-screen .actions :is(button, a) { flex: 1 1 130px; min-width: 0; }
   .message { text-align: center; }
 }
 @media (max-width: 900px) and (orientation: landscape) and (max-height: 470px) {

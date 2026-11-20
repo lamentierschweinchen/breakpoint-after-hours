@@ -9,17 +9,18 @@
   <meta property="og:title" content="Break Pint · Breakpoint After Hours">
   <meta property="og:description" content="One pint. One packed pub. Get it to the other end in one piece.">
   <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
-  <meta property="og:url" content="https://breakpoint-after-hours.vercel.app/break-pint/">
-  <meta property="og:image" content="https://breakpoint-after-hours.vercel.app/break-pint/social-preview.png">
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:width" content="1280">
-  <meta property="og:image:height" content="800">
+  <link rel="canonical" href="https://breakpoint.beer/break-pint/">
+  <meta property="og:url" content="https://breakpoint.beer/break-pint/">
+  <meta property="og:image" content="https://breakpoint.beer/break-pint/social-preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="A pint on a tray weaving through a neon pub.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@MoustacheDAO">
   <meta name="twitter:title" content="Break Pint · Breakpoint After Hours">
   <meta name="twitter:description" content="One pint. One packed pub. Get it to the other end in one piece.">
-  <meta name="twitter:image" content="https://breakpoint-after-hours.vercel.app/break-pint/social-preview.png">
+  <meta name="twitter:image" content="https://breakpoint.beer/break-pint/social-preview.jpg">
   <meta name="twitter:image:alt" content="A pint on a tray weaving through a neon pub.">
   <title>Break Pint · Breakpoint After Hours</title>
   <link rel="icon" href="../assets/favicon.ico">
@@ -30,7 +31,7 @@
     <canvas id="world" tabindex="-1" aria-label="3D pub. Drag left or right, or use the arrow keys to steer." aria-describedby="play-help"></canvas>
     <div class="shade" aria-hidden="true"></div>
     <header class="masthead">
-      <a class="back" href="../"><span aria-hidden="true">←</span> Breakpoint After Hours</a>
+      <a class="back" href="../arcade/"><span aria-hidden="true">←</span> Arcade</a>
       <div class="settings">
         <button class="subtle" id="sound" type="button" aria-pressed="false">Sound off</button>
         <button class="subtle" id="pause" type="button" hidden>Pause</button>
@@ -78,8 +79,9 @@
         <p id="result-best" class="result-best"></p>
       </div>
       <div class="actions">
-        <button id="again" class="primary" type="button" aria-label="Pint? Play again">Pint? <span aria-hidden="true">↻</span></button>
-        <button id="share" class="secondary" type="button">Share score</button>
+        <a id="share-on-x" class="primary" target="_blank" rel="noopener noreferrer">Share on X</a>
+        <button id="share" class="secondary" type="button">Share image</button>
+        <button id="again" class="secondary" type="button" aria-label="Pint? Play again">Pint? <span aria-hidden="true">↻</span></button>
         <p id="share-status" class="message" role="status"></p>
       </div>
     </section>

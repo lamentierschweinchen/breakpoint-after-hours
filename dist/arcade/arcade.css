@@ -1,0 +1,87 @@
+.arcade-page {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-block: clamp(6.2rem, 18vh, 10rem) 3rem;
+  background:
+    radial-gradient(ellipse at 78% 5%, rgb(89 53 125 / 37%), transparent 50%),
+    var(--page);
+}
+
+.arcade-room { max-width: 65rem; }
+
+.arcade-room h1 {
+  margin-bottom: clamp(1.15rem, 4vw, 2.4rem);
+  font: clamp(3rem, 9.8vw, 7rem)/.9 var(--display);
+  letter-spacing: -.075em;
+  text-transform: uppercase;
+}
+
+.arcade-room h1 > span { color: var(--mint); }
+
+.arcade-games {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #594567;
+  border-top: 2px solid var(--mint);
+  list-style: none;
+}
+
+.arcade-games li { min-width: 0; }
+.arcade-games li + li { border-top: 1px solid #594567; }
+
+.arcade-game {
+  display: grid;
+  grid-template-columns: 43% minmax(0, 1fr);
+  min-height: clamp(6rem, 29vw, 7.5rem);
+  background: #20152b;
+  text-decoration: none;
+  transition: background-color .24s cubic-bezier(.23, 1, .32, 1);
+}
+
+.arcade-game img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: 1.1;
+  background: #1b1125;
+  object-fit: cover;
+}
+
+.arcade-game--mario img { object-position: 53% 50%; }
+.arcade-game--break-pint img { object-position: 50% 66%; }
+.arcade-game--pyramid img { object-position: 50% 64%; }
+
+.arcade-game-caption {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .45rem;
+  padding: .7rem clamp(.75rem, 3.2vw, 1.3rem);
+  border-left: 1px solid #594567;
+  color: var(--text);
+  font: clamp(.98rem, 4vw, 1.35rem)/1.06 var(--display);
+  letter-spacing: -.05em;
+}
+
+.arcade-arrow { color: var(--mint); font: 700 1.2rem/1 "DM Sans", system-ui, sans-serif; }
+.arcade-game:focus-visible { position: relative; z-index: 1; outline-offset: -3px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .arcade-game:hover { background: #31203f; }
+}
+
+@media (min-width: 44rem) {
+  .arcade-games { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .arcade-games li + li { border-top: 0; border-left: 1px solid #594567; }
+  .arcade-game { grid-template-columns: 100%; }
+  .arcade-game img { height: auto; aspect-ratio: 4 / 3; }
+  .arcade-game-caption {
+    min-height: 4.35rem;
+    padding: .9rem clamp(1rem, 2vw, 1.5rem);
+    border-top: 1px solid #594567;
+    border-left: 0;
+    font-size: clamp(1.15rem, 2.25vw, 1.55rem);
+  }
+}

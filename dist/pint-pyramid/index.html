@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7e9c9">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Pint Pyramid — Breakpoint After Hours</title>
+  <meta name="description" content="Keep stacking. Spill three pints and it’s last orders.">
+  <link rel="canonical" href="https://breakpoint.beer/pint-pyramid/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pint Pyramid · Breakpoint After Hours">
+  <meta property="og:description" content="Keep stacking. Spill three pints and it’s last orders.">
+  <meta property="og:site_name" content="Breakpoint After Hours · presented by MoustacheDAO">
+  <meta property="og:url" content="https://breakpoint.beer/pint-pyramid/">
+  <meta property="og:image" content="https://breakpoint.beer/pint-pyramid/social-preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Five tiers of pint glasses stacked on the bar in Pint Pyramid.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MoustacheDAO">
+  <meta name="twitter:title" content="Pint Pyramid · Breakpoint After Hours">
+  <meta name="twitter:description" content="Keep stacking. Spill three pints and it’s last orders.">
+  <meta name="twitter:image" content="https://breakpoint.beer/pint-pyramid/social-preview.jpg">
+  <meta name="twitter:image:alt" content="Five tiers of pint glasses stacked on the bar in Pint Pyramid.">
+  <link rel="icon" href="../assets/favicon.ico">
+  <link rel="stylesheet" href="./game.css">
+  <link rel="preload" as="image" href="./pub.webp">
+  <script type="module" src="./game.mjs"></script>
+</head>
+<body>
+  <header class="masthead">
+    <a href="../arcade/">← Arcade</a>
+    <div class="utilities">
+      <button id="sound" type="button" aria-pressed="false">Sound off</button>
+      <button id="restart" type="button" aria-keyshortcuts="R" disabled>Restart</button>
+    </div>
+  </header>
+
+  <main class="cabinet">
+    <div class="marquee">
+      <div class="title-group">
+        <h1>Pint <span>Pyramid</span></h1>
+        <p class="pitch">Keep stacking.<br>Spill three pints and it’s last orders.</p>
+      </div>
+      <dl class="scoreboard" aria-label="Run score">
+        <div><dt>Score</dt><dd id="score">0</dd></div>
+        <div><dt>Spill limit</dt><dd class="spill-readout"><span id="spill-meter" class="spill-glass" role="meter" aria-label="Spill allowance remaining" aria-valuemin="0" aria-valuemax="1419" aria-valuenow="1419" aria-valuetext="3 pints left"><span class="spill-fill"></span></span><span><span id="spilled">0</span> <small>/ 3 pt</small></span></dd></div>
+        <div><dt>Best</dt><dd id="best">—</dd></div>
+      </dl>
+      <p class="desktop-controls"><kbd>A</kbd> <kbd>D</kbd> steer, <kbd>W</kbd> slows, <kbd>S</kbd> speeds up.<br><kbd>Space</kbd> drops. Arrows work too.</p>
+    </div>
+
+    <div class="game-column">
+      <section class="playfield" aria-label="Pint Pyramid playfield">
+        <canvas id="board" width="420" height="540" tabindex="0" aria-label="Drag to steer and tap to drop. Use A and D to steer, W to slow, S to speed up, Space to drop, and R to restart. Arrow keys also work." aria-describedby="status"></canvas>
+        <div class="challenge" id="challenge"><strong id="goal">Level 1</strong><span id="progress">0 / 3 landed</span></div>
+        <div class="order" id="order">
+          <div><strong id="current-glass">Shaker</strong><span id="current-fill"> · 43%</span></div>
+          <div class="up-next"><canvas id="next-pint" width="34" height="27" aria-hidden="true"></canvas><span><small>Next</small> <b id="next-glass">Stein</b><span id="next-fill"> · 49%</span></span></div>
+        </div>
+        <p class="game-status" id="status" role="status" aria-live="polite"></p>
+        <noscript><p class="game-status">Enable JavaScript to play.</p></noscript>
+        <section class="start-panel" id="start-panel" aria-labelledby="start-title">
+          <h2 id="start-title">Pint?</h2>
+          <p>Drag to steer. Tap to drop.</p>
+          <button id="start" type="button">Start pouring</button>
+          <details class="score-rules">
+            <summary>Scoring</summary>
+            <p>+100 per landing, +50 for a clean drop, +80 per new tier. Bridges add +150, up to ×3 for consecutive clean bridges. The run ends after three pints spill.</p>
+          </details>
+        </section>
+        <section id="receipt" class="receipt" aria-labelledby="result-title" hidden>
+          <p class="receipt-eyebrow" id="result-caption">The bar rag’s big break</p>
+          <h2 id="result-title" tabindex="-1">Last orders!</h2>
+          <p id="result-reason" class="result-reason"></p>
+          <p id="result-score" class="result-score"></p>
+          <p id="result-detail" class="result-detail"></p>
+          <div class="receipt-actions">
+            <a id="share-on-x" target="_blank" rel="noopener noreferrer">Share on X</a>
+            <button id="retry" type="button">Play again</button>
+            <button id="share" type="button">Copy score</button>
+          </div>
+          <p id="share-feedback" class="share-feedback" aria-live="polite"></p>
+        </section>
+      </section>
+      <div class="game-controls" id="game-controls" role="group" aria-label="Touch controls" hidden>
+        <div id="steer-pad" class="steer-pad" aria-hidden="true"><span>←</span> Steer <span>→</span></div>
+        <button type="button" id="drop" aria-keyshortcuts="Space">Drop</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

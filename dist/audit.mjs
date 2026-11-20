@@ -5,7 +5,7 @@ export const receiptCopy = {
   subtitle: 'Efficiency audit · London 2026',
   score: 'Efficiency score',
   opinion: 'Opinion',
-  hostname: 'breakpoint-after-hours.vercel.app'
+  hostname: 'breakpoint.beer'
 };
 
 const opinions = [

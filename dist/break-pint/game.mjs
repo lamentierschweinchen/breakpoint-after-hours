@@ -3,9 +3,11 @@ import { COURSE_LENGTH, FULL_FILL_HEIGHT, STEP_SECONDS, TRACK_EDGE, createRun, h
 import { buildPub, createHazard, updateHazard } from "./pub.mjs";
 import { loadPintBadge, makePint, makeSpills } from "./pint.mjs";
 import { renderScorecard } from "./scorecard.mjs";
+import { createSocialShare } from "../social.mjs";
 
 const $ = (id) => document.getElementById(id);
 const cabinet = $("cabinet");
+const gameUrl = "https://breakpoint.beer/break-pint/";
 const canvas = $("world");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
@@ -115,6 +117,7 @@ function initialize() {
   let bumpMark = null;
   let endClock = 0;
   let scorecard = null;
+  let scoreShare = null;
   let frameRequest;
   let lastDraw = 0;
   let resolution = 1;
@@ -189,6 +192,8 @@ function initialize() {
     hasSteered = false;
     bumpMark = null;
     scorecard = null;
+    scoreShare = null;
+    $("share-on-x").removeAttribute("href");
     spills.clear();
     $("share-status").textContent = "";
     $("incident").textContent = "";
@@ -335,6 +340,9 @@ function initialize() {
     $("result-best").textContent = `${seconds}s · Personal best ${best}%`;
     $("play-help").hidden = true;
     $("incident").textContent = "";
+    const result = delivered ? `${percent}% of a pint delivered in ${seconds}s.` : `${percent}% of a pint left. ${gag}`;
+    scoreShare = createSocialShare(`Break Pint. ${result}`, gameUrl);
+    $("share-on-x").href = scoreShare.xUrl;
     view("result");
     drawFrame(0);
     scorecard = renderScorecard(canvas, { percent, seconds, gag, delivered }).catch(() => null);
@@ -449,7 +457,9 @@ function initialize() {
     warmAudio();
   });
   $("share").addEventListener("click", async () => {
+    const social = scoreShare;
     const image = await scorecard;
+    if (!social || social !== scoreShare) return;
     if (!image) {
       $("share-status").textContent = "The score image couldn’t be created.";
       return;
@@ -457,7 +467,7 @@ function initialize() {
     const file = new File([image], "break-pint.png", { type: "image/png" });
     if (navigator.canShare?.({ files: [file] })) {
       try {
-        await navigator.share({ files: [file], title: "Break Pint", url: "https://breakpoint-after-hours.vercel.app/break-pint/" });
+        await navigator.share({ files: [file], title: "Break Pint", text: social.text, url: social.url });
         return;
       } catch (error) {
         if (error.name === "AbortError") return;
