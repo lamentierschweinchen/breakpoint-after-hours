@@ -67,12 +67,6 @@ function opinionFor(score, implausible) {
   return implausible || score >= 100 ? voidOpinion : opinions.find(band => score < band.max);
 }
 
-export function buildShareScore(stats) {
-  const publicStats = { ...stats, favors: 0 };
-  const { score } = calculateScoreBreakdown(publicStats);
-  return { score, opinion: opinionFor(score, isImplausible(publicStats)) };
-}
-
 export function fieldError(name, value, badInput) {
   if (badInput) return 'Enter a number.';
   if (value < 0) return 'No refunds. Enter zero or more.';

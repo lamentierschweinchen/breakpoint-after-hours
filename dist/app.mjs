@@ -1,5 +1,5 @@
 import { gramsPerOunce } from './score.mjs';
-import { buildReceipt, buildShareScore, fieldError, liveNotes } from './audit.mjs';
+import { buildReceipt, fieldError, liveNotes } from './audit.mjs';
 import { renderReceipt } from './receipt.mjs';
 import { createScoreImage } from './share-image.mjs';
 import { createSocialShare } from './social.mjs';
@@ -62,7 +62,6 @@ const pulseTimers = new WeakMap();
 let activeUnit = 'g';
 let enteredFavors = { amount: 0, unit: 'g' };
 let currentReceipt = null;
-let currentShareScore = null;
 let statsSignature;
 let changedAt;
 let previousNotes = new Map();
@@ -78,7 +77,7 @@ let reveal;
 let revealFrame;
 let imageUrl;
 let shareFile;
-let shareBatch = null;
+let shareSnapshot = null;
 let shareOpener;
 let shareRequest = 0;
 
@@ -221,7 +220,6 @@ function renderAudit({ initial = false } = {}) {
   }
 
   currentReceipt = Object.keys(entries).length ? buildReceipt(stats, entries, activeUnit, changedAt, target) : null;
-  currentShareScore = currentReceipt ? buildShareScore(stats) : null;
   renderReceipt(currentReceipt);
   const score = currentReceipt?.score ?? null;
   dockScore.textContent = score === null ? '—' : String(score);
@@ -392,10 +390,10 @@ function clearShareImage() {
 }
 
 async function renderShareImage() {
-  if (!shareBatch) return;
+  if (!shareSnapshot) return;
   const copy = shareCopies.find(option => option.checked)?.value ?? 'public';
   const isCustomer = copy === 'customer';
-  const snapshot = shareBatch[copy];
+  const snapshot = shareSnapshot;
   const format = shareFormats.find(option => option.checked)?.value ?? 'landscape';
   const request = ++shareRequest;
   clearShareImage();
@@ -435,11 +433,9 @@ async function renderShareImage() {
 }
 
 function openShare(event) {
-  if (!currentReceipt || !currentShareScore) return;
-  shareBatch = {
-    public: currentShareScore,
-    customer: { score: currentReceipt.score, opinion: currentReceipt.opinion }
-  };
+  if (!currentReceipt) return;
+  const { score, opinion: { stamp, finding } } = currentReceipt;
+  shareSnapshot = { score, opinion: { stamp, finding } };
   shareCopies[0].checked = true;
   shareOpener = event.currentTarget;
   challengeInput.hidden = true;
@@ -469,10 +465,10 @@ function systemShare(snapshot) {
 }
 
 nativeShare.addEventListener('click', async () => {
-  if (!shareFile || !shareBatch) return;
+  if (!shareFile || !shareSnapshot) return;
   const request = shareRequest;
   try {
-    await navigator.share(systemShare(shareBatch.public));
+    await navigator.share(systemShare(shareSnapshot));
   } catch (error) {
     if (error.name !== 'AbortError' && shareDialog.open && request === shareRequest) {
       shareStatus.textContent = 'Sharing couldn’t open. Download the PNG to post it.';
@@ -494,7 +490,7 @@ copyImage.addEventListener('click', async () => {
 });
 
 copyChallenge.addEventListener('click', async () => {
-  const snapshot = shareBatch?.public;
+  const snapshot = shareSnapshot;
   if (!snapshot || copyChallenge.hidden) return;
   const request = shareRequest;
   const link = challengeLink(snapshot.score);
@@ -511,7 +507,7 @@ copyChallenge.addEventListener('click', async () => {
 
 shareDialog.addEventListener('close', () => {
   if (shareDialog.open) return;
-  shareBatch = null;
+  shareSnapshot = null;
   clearShareImage();
   updateDock();
   shareOpener?.focus({ preventScroll: true });
