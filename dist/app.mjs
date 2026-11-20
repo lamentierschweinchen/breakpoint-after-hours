@@ -3,6 +3,7 @@ import { buildReceipt, buildShareScore, fieldError, liveNotes } from './audit.mj
 import { renderReceipt } from './receipt.mjs';
 import { createScoreImage } from './share-image.mjs';
 import { createSocialShare } from './social.mjs';
+import { readArcadeDraft, saveArcadeDraft } from './arcade-draft.mjs';
 
 const root = document.documentElement;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -57,7 +58,6 @@ const arcadeLinks = document.querySelectorAll('a[href="./arcade/"]');
 const receiptArcade = document.querySelector('#receipt-arcade');
 
 const example = { leads: 10, deals: 3, value: 24000, sideEvents: 3, pints: 5, cigs: 6, favors: 1, sleep: 4 };
-const arcadeDraftKey = 'breakpoint:arcade-receipt';
 const pulseTimers = new WeakMap();
 let activeUnit = 'g';
 let enteredFavors = { amount: 0, unit: 'g' };
@@ -96,28 +96,14 @@ function recordFavors() {
 function stashArcadeDraft(event) {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   const values = Object.fromEntries(inputs.filter(input => input.value !== '').map(input => [input.name, input.value]));
-  if (!Object.keys(values).length) return;
-  try {
-    sessionStorage.setItem(arcadeDraftKey, JSON.stringify({ values, unit: activeUnit, enteredFavors }));
-  } catch {
-    // The arcade is still available when browser storage is disabled.
-  }
+  if (!Object.keys(values).length && target === null) return;
+  saveArcadeDraft({ values, unit: activeUnit, enteredFavors, benchmark: target, fromReceipt: event.currentTarget === receiptArcade });
 }
 
 for (const link of arcadeLinks) link.addEventListener('click', stashArcadeDraft);
 
-function takeArcadeDraft() {
-  try {
-    const saved = sessionStorage.getItem(arcadeDraftKey);
-    sessionStorage.removeItem(arcadeDraftKey);
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-}
-
 window.addEventListener('pageshow', event => {
-  if (event.persisted) takeArcadeDraft();
+  if (event.persisted) readArcadeDraft({ consume: true });
 });
 
 function setUnit(unit) {
@@ -531,7 +517,7 @@ shareDialog.addEventListener('close', () => {
   shareOpener?.focus({ preventScroll: true });
 });
 
-const arcadeDraft = takeArcadeDraft();
+const arcadeDraft = readArcadeDraft({ consume: true });
 if (arcadeDraft) {
   setUnit(arcadeDraft.unit);
   for (const input of inputs) input.value = arcadeDraft.values[input.name] ?? '';
@@ -540,5 +526,9 @@ if (arcadeDraft) {
   recordFavors();
 }
 renderAudit({ initial: true });
+if (arcadeDraft?.fromReceipt && currentReceipt) {
+  receipt.focus({ preventScroll: true });
+  receipt.scrollIntoView({ block: 'start', behavior: 'instant' });
+}
 syncDockPosition();
 syncScrollProgress();
