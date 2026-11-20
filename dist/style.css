@@ -630,19 +630,86 @@ input[aria-invalid="true"], .input-frame:has(input[aria-invalid="true"]) { borde
 
 .receipt-header { padding-bottom: .82rem; border-bottom: 1px dashed #786981; }
 
-.receipt h2, .receipt h3, .receipt-subtitle, .opinion-stamp {
+.receipt h2, .receipt h3, .receipt-subtitle, .opinion-stamp { text-transform: uppercase; }
+.receipt h2 {
+  font: clamp(.98rem, 4.45vw, 1.43rem)/1.13 var(--display);
+  letter-spacing: -.035em;
+}
+.receipt h3 {
+  font-size: .8rem;
+  line-height: 1.23;
+  font-weight: 900;
+  letter-spacing: .07em;
+}
+.receipt-subtitle {
+  margin-top: .3rem;
+  font-size: .78rem;
+  font-weight: 840;
+  letter-spacing: .055em;
+}
+#receipt-printed {
+  margin-top: .42rem;
+  color: #594662;
+  font-size: .82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt :focus-visible { outline-color: #372448; }
+
+.receipt-empty { padding-block: 1rem; }
+.receipt-empty p:first-child { font-weight: 850; }
+.receipt-empty p + p { margin-top: .15rem; }
+
+.receipt-items { padding-top: .72rem; }
+.receipt-items + .receipt-items { padding-top: .78rem; }
+.receipt-items-heading, .receipt-rounding, .receipt-total, .receipt-economic {
+  display: flex;
+  justify-content: space-between;
+  gap: .6rem;
+  align-items: baseline;
+}
+.receipt-items-heading { padding-bottom: .18rem; }
+.receipt-items-heading span { color: #594662; font-weight: 750; }
+.receipt dl, .receipt dd { margin: 0; }
+.receipt-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .94fr) minmax(3.85rem, .6fr);
+  align-items: baseline;
+  gap: .38rem;
+  padding-block: .15rem;
+  font-variant-numeric: tabular-nums;
+}
+.receipt-row dt, .receipt-quantity, .receipt-economic dd { min-width: 0; overflow-wrap: anywhere; }
+.receipt-points { text-align: end; font-weight: 770; white-space: nowrap; }
+.receipt-row-nested dt { padding-inline-start: .65rem; }
+.receipt-row-nested .receipt-quantity { grid-column: span 2; }
+.receipt-rounding { padding-block: .28rem .1rem; font-variant-numeric: tabular-nums; }
+
+.receipt-total {
+  margin-top: .7rem;
+  padding-block: .62rem;
+  border-block: 1px dashed #786981;
+}
+#score-value {
+  font: clamp(1rem, 5.1vw, 1.42rem)/1.12 var(--display);
+  letter-spacing: -.045em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt-block { padding-block: .78rem; border-bottom: 1px dashed #786981; }
+.receipt-block h3 { margin-bottom: .32rem; }
+.opinion-stamp {
   display: inline-block;
   max-width: 100%;
   margin-block: .08rem .32rem;
-  padding: .24rem .42rem .2rem;
-  border: 1px dashed #785579;
-  background-color: rgb(94 59 101 / 7%);
+  padding: .24rem .38rem .2rem;
+  border: 1px solid #5e3b65;
   color: #4a2455;
   font: clamp(.76rem, 3.25vw, .98rem)/1.15 var(--display);
   letter-spacing: -.025em;
-  transform: rotate(-1deg);
+  white-space: nowrap;
 }
-
 .receipt-economic { padding-block: .1rem; }
 .receipt-economic dd { text-align: end; font-variant-numeric: tabular-nums; }
 #receipt-notes-list p + p { margin-top: .18rem; }
