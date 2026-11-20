@@ -141,17 +141,6 @@ a { color: inherit; }
   content: "";
 }
 
-.method-link {
-  display: flex;
-  align-items: center;
-  min-height: 2.75rem;
-  font-size: .875rem;
-  color: var(--text);
-  text-underline-offset: .3rem;
-  text-decoration-color: var(--muted);
-}
-.method-link:hover { color: var(--mint); }
-
 .hero {
   position: relative;
   display: grid;
@@ -303,6 +292,24 @@ a { color: inherit; }
 }
 
 .hero-action:hover { background: #d0ffe9; box-shadow: 0 0 1.8rem rgb(152 249 216 / 20%); }
+
+.hero-arcade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-height: 3.15rem;
+  padding: .6rem clamp(.55rem, 2.8vw, .95rem);
+  border: 1px solid rgb(152 249 216 / 62%);
+  border-radius: .2rem;
+  color: var(--text);
+  background: rgb(20 13 31 / 85%);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.hero-arcade:hover { border-color: var(--mint); background: #2c1d3c; }
+.hero-arcade span, .receipt-arcade span { color: var(--mint); }
 
 .audit {
   position: relative;
@@ -601,6 +608,18 @@ input[aria-invalid="true"], .input-frame:has(input[aria-invalid="true"]) { borde
 
 .receipt-area { min-width: 0; }
 .receipt-share { margin-top: 1.4rem; }
+.receipt-arcade {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  width: fit-content;
+  min-height: 2.75rem;
+  margin: .35rem auto 0;
+  font-size: .9rem;
+  font-weight: 800;
+  text-underline-offset: .22em;
+}
+.receipt-arcade:hover { color: var(--mint); }
 
 .receipt::before {
   position: absolute;
@@ -953,22 +972,23 @@ input[aria-invalid="true"], .input-frame:has(input[aria-invalid="true"]) { borde
 }
 
 .method {
-  border-block: 1px solid var(--line);
+  border-block-start: 1px solid var(--line);
   scroll-margin-top: 1rem;
 }
 .method summary {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: .5rem;
   align-items: center;
-  min-height: 3.55rem;
+  width: fit-content;
+  min-height: 2.75rem;
   color: var(--muted);
-  font-weight: 770;
+  font-size: .84rem;
+  font-weight: 650;
   cursor: pointer;
   list-style: none;
 }
 .method summary::-webkit-details-marker { display: none; }
-.method summary::after { content: "+"; color: var(--mint); font-size: 1.45rem; font-weight: 500; }
+.method summary::after { content: "+"; font-size: 1.05rem; font-weight: 500; }
 .method[open] summary::after { content: "−"; }
 .method summary:hover, .method[open] summary { color: var(--mint); }
 

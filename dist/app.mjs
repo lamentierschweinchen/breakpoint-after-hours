@@ -53,7 +53,8 @@ const nativeShare = document.querySelector('#native-share');
 const copyImage = document.querySelector('#copy-image');
 const copyChallenge = document.querySelector('#copy-challenge');
 const challengeInput = document.querySelector('#challenge-url');
-const arcadeLink = document.querySelector('.site-nav a[href="./arcade/"]');
+const arcadeLinks = document.querySelectorAll('a[href="./arcade/"]');
+const receiptArcade = document.querySelector('#receipt-arcade');
 
 const example = { leads: 10, deals: 3, value: 24000, sideEvents: 3, pints: 5, cigs: 6, favors: 1, sleep: 4 };
 const arcadeDraftKey = 'breakpoint:arcade-receipt';
@@ -92,7 +93,7 @@ function recordFavors() {
   enteredFavors = { amount: favorsInput.valueAsNumber || 0, unit: activeUnit };
 }
 
-arcadeLink.addEventListener('click', event => {
+function stashArcadeDraft(event) {
   if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   const values = Object.fromEntries(inputs.filter(input => input.value !== '').map(input => [input.name, input.value]));
   if (!Object.keys(values).length) return;
@@ -101,7 +102,9 @@ arcadeLink.addEventListener('click', event => {
   } catch {
     // The arcade is still available when browser storage is disabled.
   }
-});
+}
+
+for (const link of arcadeLinks) link.addEventListener('click', stashArcadeDraft);
 
 function takeArcadeDraft() {
   try {
@@ -237,6 +240,7 @@ function renderAudit({ initial = false } = {}) {
   const score = currentReceipt?.score ?? null;
   dockScore.textContent = score === null ? '—' : String(score);
   shareButton.disabled = score === null;
+  receiptArcade.hidden = score === null;
   root.style.setProperty('--score-progress', (score ?? 0) / 100);
 
   clearTimeout(noteTimer);
@@ -385,9 +389,6 @@ document.querySelector('#clear').addEventListener('click', () => {
   renderAudit();
 });
 
-document.querySelector('.method-link').addEventListener('click', () => {
-  document.querySelector('#method').open = true;
-});
 document.querySelector('#method').addEventListener('toggle', syncScrollProgress);
 
 function clearShareImage() {
