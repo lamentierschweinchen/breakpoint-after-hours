@@ -10,13 +10,14 @@ export const receiptCopy = {
 
 const opinions = [
   { max: 10, stamp: 'Dormant account', finding: 'Badge collected. No material activity since.' },
-  { max: 25, stamp: 'Fully compliant', finding: 'Seen at the hotel breakfast. Twice.' },
+  { max: 25, stamp: 'Fully compliant', finding: 'Seen at the hotel breakfast.' },
   { max: 40, stamp: 'Requires improvement', finding: 'Left while the drinks were still free.' },
-  { max: 55, stamp: 'Meets expectations', finding: 'Lanyard still on at the second venue.' },
+  { max: 55, stamp: 'Meets expectations', finding: 'A solid showing.' },
   { max: 70, stamp: 'Exceeds expectations', finding: 'Last seen negotiating with a kebab shop.' },
-  { max: 85, stamp: 'Material weakness', finding: 'Internal controls not operating effectively after last orders.' },
-  { max: 100, stamp: 'Going concern', finding: 'Substantial doubt about the attendee’s ability to continue.' }
+  { max: 85, stamp: 'Outstanding', finding: 'Made the most of the week.' },
+  { max: 100, stamp: 'Exceptional', finding: 'Set the standard for next year.' }
 ];
+const perfectOpinion = { stamp: 'Perfect score', finding: 'Approved in full.' };
 const voidOpinion = { stamp: 'Void', finding: 'Totals consistent with a mid-sized venue.' };
 
 function note(id, text, when, { live = false, receipt = false } = {}) {
@@ -32,7 +33,7 @@ const notes = [
   note('pipeline', 'No deal closed. Value moved to pipeline.', s => s.value > 0 && s.deals === 0, { receipt: true }),
   note('napkins', 'Napkins are not accepted as contracts.', s => s.value >= 1000000 && s.deals >= 1, { live: true, receipt: true }),
   note('leads-cap', 'Only the first 24 leads are believed.', s => s.leads > conferenceCountLimits.leads, { live: true, receipt: true }),
-  note('deals-cap', 'After the third, deals count as conversations.', s => s.deals > 3, { live: true, receipt: true }),
+  note('deals-cap', 'Only the first 12 deals are scored.', s => s.deals > conferenceCountLimits.deals, { live: true, receipt: true }),
   note('value-cap', 'Only the first $50,000 is scored.', s => s.value > 50000 && s.value < 1000000, { live: true }),
   note('events-cap', 'After the fifteenth, only the sponsor changes.', s => s.sideEvents > conferenceCountLimits.sideEvents, { live: true, receipt: true }),
   note('sleep-full', 'Voluntary disclosure accepted.', s => s.sleep !== null && s.sleep >= 8 && s.sleep < 12, { live: true }),
@@ -64,7 +65,9 @@ function isImplausible(s) {
 }
 
 function opinionFor(score, implausible) {
-  return implausible || score >= 100 ? voidOpinion : opinions.find(band => score < band.max);
+  if (implausible) return voidOpinion;
+  if (score === 69) return perfectOpinion;
+  return opinions.find(band => score < band.max) ?? opinions.at(-1);
 }
 
 export function fieldError(name, value, badInput) {
