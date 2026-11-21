@@ -1,3 +1,4 @@
+import { mountLeaderboard } from "../arcade/leaderboard.mjs";
 import * as T from "./vendor/three.module.js";
 import { COURSE_LENGTH, FULL_FILL_HEIGHT, STEP_SECONDS, TRACK_EDGE, createRun, hazardX, stepRun } from "./physics.mjs";
 import { buildPub, createHazard, updateHazard } from "./pub.mjs";
@@ -7,6 +8,7 @@ import { createSocialShare } from "../social.mjs";
 
 const $ = (id) => document.getElementById(id);
 const cabinet = $("cabinet");
+const postScore = mountLeaderboard("break-pint", $("title-screen").querySelector(".actions"), $("result").querySelector(".actions"));
 const gameUrl = "https://breakpoint.beer/break-pint/";
 const canvas = $("world");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -343,6 +345,7 @@ function initialize() {
     const result = delivered ? `${percent}% of a pint delivered in ${seconds}s.` : `${percent}% of a pint left. ${gag}`;
     scoreShare = createSocialShare(`Break Pint. ${result}`, gameUrl);
     $("share-on-x").href = scoreShare.xUrl;
+    postScore(1, percent, delivered);
     view("result");
     drawFrame(0);
     scorecard = renderScorecard(canvas, { percent, seconds, gag, delivered }).catch(() => null);

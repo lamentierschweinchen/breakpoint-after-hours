@@ -1,3 +1,4 @@
+import { mountLeaderboard } from "../arcade/leaderboard.mjs";
 import { bindScorecard } from "./scorecard.mjs";
 
 const layouts = [
@@ -364,6 +365,7 @@ function readProgress() {
 const progress = readProgress();
 const $ = (selector) => document.querySelector(selector);
 const game = $(".game");
+const postScore = mountLeaderboard("meet-mario", $(".levels"), $("#finish-share").parentElement);
 const venueSignal = $(".venue-signal");
 const signalStrands = [...venueSignal.querySelectorAll("path")];
 const board = $("#board");
@@ -1028,6 +1030,7 @@ function finishRun(item) {
   const index = progress.active;
   const last = index === levels.length - 1;
   run.result = item ? "cleared" : "cutoff";
+  postScore(index + 1, run.moves, Boolean(item));
   finishShare.hidden = !item;
   nextButton.hidden = !item || last;
   moveButtons.forEach((button) => { button.disabled = true; });

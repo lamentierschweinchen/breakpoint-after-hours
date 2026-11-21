@@ -1,3 +1,4 @@
+import { mountLeaderboard } from '../arcade/leaderboard.mjs';
 import { createSocialShare } from '../social.mjs';
 import { createPint, createWorld } from './physics.mjs';
 import { fallSpeed, newScore, OPENING_SPEED, PINT_ML, pourAt, recordLanding, SPILL_LIMIT } from './arcade.mjs';
@@ -20,6 +21,7 @@ const order = get('order');
 const challenge = get('challenge');
 const status = get('status');
 const receipt = get('receipt');
+const postScore = mountLeaderboard('pint-pyramid', get('start-panel'), receipt.querySelector('.receipt-actions'));
 const startPanel = get('start-panel');
 const controls = get('game-controls');
 const steerPad = get('steer-pad');
@@ -319,6 +321,7 @@ function finish() {
   get('result-score').textContent = `${number.format(state.shownScore)} points${record ? ' · New best' : ''}`;
   get('result-detail').textContent = resultStats();
   get('share-on-x').href = resultShare().xUrl;
+  postScore(0, state.shownScore);
   receipt.hidden = false;
   get('result-title').focus({ preventScroll: true });
 }

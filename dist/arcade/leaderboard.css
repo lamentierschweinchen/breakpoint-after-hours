@@ -1,0 +1,62 @@
+.leaderboard-button {
+  min-block-size: 44px;
+  padding: .5rem .75rem;
+  border: 1px solid currentColor;
+  border-radius: .4rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.leaderboard-button[hidden], .arcade-leaderboard [hidden] { display: none; }
+.leaderboard-button:focus-visible, .arcade-leaderboard input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.arcade-leaderboard {
+  --leaderboard-paper: #f4eada;
+  --leaderboard-ink: #1e1228;
+  --leaderboard-rule: #8f7d98;
+  box-sizing: border-box;
+  inline-size: min(30rem, calc(100% - 1.5rem));
+  max-block-size: calc(100dvh - 1.5rem);
+  margin: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(.85rem, 4vw, 1.5rem);
+  border: 1px solid var(--leaderboard-ink);
+  border-radius: .65rem;
+  background: var(--leaderboard-paper);
+  color: var(--leaderboard-ink);
+}
+.arcade-leaderboard::backdrop { background: rgb(15 8 22 / .8); }
+.leaderboard-heading { display: flex; align-items: start; justify-content: space-between; gap: .75rem; }
+.leaderboard-heading h2 { margin: .4rem 0 .9rem; font-size: 1.35rem; line-height: 1.15; }
+.leaderboard-cohorts { display: flex; flex-wrap: wrap; gap: .35rem; }
+.leaderboard-cohorts .leaderboard-button { padding-inline: .5rem; font-size: .9rem; }
+.leaderboard-cohorts [aria-pressed="true"], .leaderboard-share button {
+  background: var(--leaderboard-ink);
+  color: var(--leaderboard-paper);
+}
+.leaderboard-state:empty, .leaderboard-feedback:empty { display: none; }
+.leaderboard-rows { padding-inline-start: 1.5rem; }
+.leaderboard-rows li { padding: .4rem .15rem; border-block-end: 1px solid var(--leaderboard-rule); }
+.leaderboard-rows strong { margin-inline-start: .45rem; font-variant-numeric: tabular-nums; }
+.leaderboard-share { border-block-start: 1px dashed var(--leaderboard-rule); padding-block-start: .75rem; }
+.leaderboard-share p { margin: .5rem 0; }
+.leaderboard-share label { display: block; font-size: .9rem; }
+.leaderboard-share input {
+  display: block;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 44px;
+  margin: .35rem 0 .75rem;
+  padding: .4rem .6rem;
+  border: 1px solid var(--leaderboard-rule);
+  border-radius: .35rem;
+  background: var(--leaderboard-paper);
+  color: var(--leaderboard-ink);
+  font: inherit;
+  font-size: 1rem;
+}
