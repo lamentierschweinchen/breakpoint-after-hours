@@ -1000,12 +1000,21 @@ input[aria-invalid="true"], .input-frame:has(input[aria-invalid="true"]) { borde
 .site-footer {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   gap: .38rem 1.4rem;
   padding-block: 1.3rem 2rem;
   color: var(--muted);
   font-size: .84rem;
 }
+
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-underline-offset: .2em;
+}
+.site-footer a:hover { color: var(--mint); }
 
 .sr-only {
   position: absolute;
