@@ -4,7 +4,7 @@ An unofficial Breakpoint parody with a score calculator and three arcade games. 
 
 The website lives in `dist/`. To preview it locally, run `python3 -m http.server --directory dist` and open [localhost:8000](http://localhost:8000/). The Vercel function in `api/` serves social preview metadata for challenge links in production.
 
-The [local MCP server](mcp/README.md) lets an agent calculate receipts using the same scoring code as the website.
+The [MCP tool](mcp/README.md) lets an agent calculate receipts using the same scoring code as the website. Connect at `https://breakpoint.beer/mcp` or run it locally.
 
 ## Reuse
 

@@ -1,8 +1,12 @@
 # Breakpoint After Hours MCP
 
-`calculate_receipt` runs the same score and rating code as breakpoint.beer. It takes the participant’s selected audit totals and returns the score, rating, finding, and score-only challenge URL. Calculation runs inside the local MCP process over standard input and output.
+`calculate_receipt` runs the same score and rating code as breakpoint.beer. It takes the participant’s selected audit totals and returns the score, rating, finding, and score-only challenge URL.
 
-## Setup
+## Hosted setup
+
+Use `https://breakpoint.beer/mcp` as a Streamable HTTP MCP endpoint. It calculates each receipt in memory, discards the inputs after the request, and sends responses with `Cache-Control: no-store`. The endpoint has no input logging, database, or analytics. Send the selected totals as tool arguments in the request body.
+
+## Local setup
 
 Keep the `mcp` and `dist` folders next to each other. From the extracted folder or repository root, install the locked dependencies.
 
